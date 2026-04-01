@@ -15,8 +15,10 @@ import auth
 
 
 app = FastAPI(
-    redoc_url=None,
-    docs_url=None
+    @app.on_event("startup")
+async def startup_event():
+    await auth.check_auth()
+
 )
 
 origins = ["*"]
