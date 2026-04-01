@@ -15,11 +15,14 @@ import auth
 
 
 app = FastAPI(
-    @app.on_event("startup")
+    redoc_url=None,
+    docs_url=None
+)
+
+@app.on_event("startup")
 async def startup_event():
     await auth.check_auth()
 
-)
 
 origins = ["*"]
 app.include_router(client.router)
