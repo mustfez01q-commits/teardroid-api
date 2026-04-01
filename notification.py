@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from fastapi_jwt_auth import AuthJWT
-from db.database import notification_db
+from database import notification_db
 
 router = APIRouter(
     prefix="/notification",
