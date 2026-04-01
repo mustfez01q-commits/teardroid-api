@@ -24,12 +24,12 @@ class password(BaseModel):
     new_password: str
 
 
-def check_auth():
-    data = auth_db.fetch().items
+async def check_auth():
+    cursor = auth_db.find({})
+    data = await cursor.to_list(length=1)
     if len(data) == 0:
-        auth_db.put({"username": "admin", "password": "admin"})
-    else:
-        pass
+        await auth_db.insert_one({"username": "admin", "password": "admin"})
+
 
 
 @router.post("/login")
