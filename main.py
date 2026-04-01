@@ -6,11 +6,10 @@ from pydantic import BaseModel
 from fastapi_jwt_auth import AuthJWT
 from fastapi_jwt_auth.exceptions import AuthJWTException
 from starlette.exceptions import HTTPException as StarletteHTTPException
-from client import client
-import command as command_file
-command = command_file.command
-from notification import notification
-from auth import auth
+import client
+import command
+import notification
+import auth
 
 # from config import USER_AGENT
 
