@@ -1,4 +1,9 @@
 fastapi==0.79.0
+uvicorn
+pydantic<2.0.0
 python-multipart
 fastapi-jwt-auth
-uvicorn
+sqlalchemy
+passlib
+python-jose[cryptography]
+deta
