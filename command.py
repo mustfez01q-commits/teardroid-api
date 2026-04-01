@@ -3,8 +3,8 @@ from fastapi import APIRouter, File, UploadFile, Depends
 from pydantic import BaseModel
 from fastapi.responses import JSONResponse, StreamingResponse
 from fastapi.encoders import jsonable_encoder
-from db.database import command_db, tear_drive
-from routers.client import client
+from database import command_db, tear_drive
+from client import client
 from fastapi_jwt_auth import AuthJWT
 
 router = APIRouter(
