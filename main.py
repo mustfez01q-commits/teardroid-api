@@ -7,7 +7,7 @@ from fastapi_jwt_auth import AuthJWT
 from fastapi_jwt_auth.exceptions import AuthJWTException
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from client import client
-from command.command import command
+from command import command
 from notification import notification
 from auth import auth
 
