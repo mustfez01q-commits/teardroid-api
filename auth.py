@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import HTTPException
 from fastapi_jwt_auth import AuthJWT
-from db.database import auth_db
+from database import auth_db
 
 router = APIRouter(
     prefix="/auth",
