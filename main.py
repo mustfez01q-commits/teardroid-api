@@ -24,7 +24,7 @@ app.include_router(client.router)
 app.include_router(command.router)
 app.include_router(notification.router)
 app.include_router(auth.router)
-auth.check_auth()
+await auth.check_auth()
 app.mount("/v4", StaticFiles(directory="build", html=True), name="build")
 app.mount("/static", StaticFiles(directory="static", html=True), name="static")
 app.add_middleware(
