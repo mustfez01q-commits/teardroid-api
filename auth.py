@@ -11,49 +11,50 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
-auth_db = auth_db()
-
+# MongoDB collection instance
+auth_collection = auth_db()
 
 class client(BaseModel):
     username: str
     password: str
 
-
 class password(BaseModel):
     old_password: str
     new_password: str
 
-
 async def check_auth():
-    cursor = auth_db.find({})
-    data = await cursor.to_list(length=1)
-    if len(data) == 0:
-        await auth_db.insert_one({"username": "admin", "password": "admin"})
-
-
+    # MongoDB mein find() use hota hai fetch() nahi
+    user_exists = await auth_collection.find_one({"username": "admin"})
+    if not user_exists:
+        await auth_collection.insert_one({"username": "admin", "password": "admin"})
 
 @router.post("/login")
 async def add_client(client: client, Authorize: AuthJWT = Depends()):
-    user = auth_db.fetch(
-        {"username": client.username, "password": client.password}
-    ).items
-    if len(user) == 0:
+    # MongoDB find_one use kar rahe hain
+    user = await auth_collection.find_one({"username": client.username, "password": client.password})
+    
+    if not user:
         raise HTTPException(status_code=401, detail="User not found")
-    access_token = Authorize.create_access_token(subject=client.username,expires_time=False)
-    return JSONResponse(
-        {
-            "success": True,
-            "token": access_token,
-            "message": "login successfully",
-        }
-    )
-
+    
+    access_token = Authorize.create_access_token(subject=client.username, expires_time=False)
+    return JSONResponse({
+        "success": True,
+        "token": access_token,
+        "message": "login successfully",
+    })
 
 @router.post("/password/change")
-async def get_client(password: password,Authorize: AuthJWT = Depends()):
+async def get_client(password: password, Authorize: AuthJWT = Depends()):
     Authorize.jwt_required()
-    data = auth_db.fetch({"password": password.old_password}).items
-    if len(data) == 0:
+    
+    # Purane password ko dhoondo
+    user = await auth_collection.find_one({"password": password.old_password})
+    if not user:
         raise HTTPException(status_code=401, detail="Incorrect old password")
-    auth_db.update(key=data[0]["key"], updates={"password": password.new_password})
+    
+    # Password update karo
+    await auth_collection.update_one(
+        {"_id": user["_id"]}, 
+        {"$set": {"password": password.new_password}}
+    )
     return JSONResponse({"success": True, "message": "password changed successfully"})
