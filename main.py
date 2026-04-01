@@ -6,10 +6,11 @@ from pydantic import BaseModel
 from fastapi_jwt_auth import AuthJWT
 from fastapi_jwt_auth.exceptions import AuthJWTException
 from starlette.exceptions import HTTPException as StarletteHTTPException
-from routers.client import client
-from routers.command import command
-from routers.notification import notification
-from routers.auth import auth
+from client import client
+from command import command
+from notification import notification
+from auth import auth
+
 # from config import USER_AGENT
 
 
