@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from fastapi_jwt_auth import AuthJWT
-from db.database import client_db
+from database import client_db
 
 router = APIRouter(
     prefix="/client",
